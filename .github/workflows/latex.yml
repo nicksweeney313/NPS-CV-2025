@@ -18,12 +18,18 @@ jobs:
       - name: Set up LaTeX
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: main.tex  # Make sure your main file is named exactly this
+          root_file: main.tex
+
+      - name: Set up authentication
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
       - name: Commit compiled PDF
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
           git add main.pdf
-          git commit -m "Update compiled PDF"
+          git commit -m "Update compiled PDF" || echo "No changes to commit"
           git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
