@@ -1,0 +1,33 @@
+name: Build and Publish PDF to GitHub Pages
+
+on:
+  push:
+    paths:
+      - '**.tex'
+      - '**.bib'
+      - '.github/workflows/build-pdf-to-pages.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Compile LaTeX (main.tex)
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: main.tex
+
+      - name: Deploy PDF to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .  # PDF is created in root
+          publish_branch: gh-pages
+          keep_files: true
+          allow_empty_commit: false
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions@github.com'
+          commit_message: 'Deploy compiled main.pdf to gh-pages'
