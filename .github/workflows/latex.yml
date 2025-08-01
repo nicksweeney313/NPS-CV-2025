@@ -1,0 +1,29 @@
+name: Build LaTeX PDF
+
+on:
+  push:
+    paths:
+      - '**.tex'
+      - '**.bib'
+      - '.github/workflows/latex.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up LaTeX
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: cv.tex  # Change this if your main file is named differently
+
+      - name: Commit compiled PDF
+        run: |
+          git config --global user.email "action@github.com"
+          git config --global user.name "GitHub Action"
+          git add *.pdf
+          git commit -m "Update compiled PDF"
+          git push
