@@ -18,12 +18,12 @@ jobs:
       - name: Set up LaTeX
         uses: xu-cheng/latex-action@v2
         with:
-          root_file: main.tex  # Change this if your main file is named differently
+          root_file: main.tex  # Make sure your main file is named exactly this
 
       - name: Commit compiled PDF
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
-          git add *.pdf
+          git add main.pdf
           git commit -m "Update compiled PDF"
           git push
